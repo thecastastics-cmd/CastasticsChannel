@@ -6,6 +6,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Castastics Channel</title>
     <style>
+
+
+        /* --- NEW YOUTUBE YELLOW STYLE LAYOUT --- */
+        .channel-banner {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
+            background-image: url('banner.jpg'); /* Name your banner image 'banner.jpg' */
+            background-size: cover;
+            background-position: center;
+            border-bottom: 4px solid #ffcc00;
+        }
+        .channel-header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: left;
+            margin: 25px auto 35px;
+            max-width: 1100px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .channel-pfp {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #ffcc00;
+            object-fit: cover;
+            background: #1a1a1a;
+        }
+        .channel-details {
+            flex: 1;
+            min-width: 250px;
+        }
+        .channel-details h1 {
+            color: #ffcc00;
+            font-size: 2.5rem;
+            margin: 0 0 5px 0;
+            text-transform: uppercase;
+        }
+        .sub-count {
+            color: #aaa;
+            font-size: 1rem;
+            margin: 0 0 15px 0;
+            font-family: sans-serif;
+        }
+        .sub-btn {
+            background: #ffcc00;
+            color: #000;
+            border: none;
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
+        }
+        .sub-btn:hover { transform: scale(1.05); background: #ffe066; }
+        .sub-btn.subscribed { background: #272727; color: #aaa; border: 1px solid #3e3e3e; }
         body { background: #000; color: #ffcc00; font-family: 'Arial Black', sans-serif; margin: 0; padding: 20px; text-align: center; }
         h1 { font-size: 3rem; text-shadow: 2px 2px #333; margin-bottom: 10px; text-transform: uppercase; }
         .container { max-width: 1100px; margin: auto; }
@@ -52,8 +112,17 @@
 </head>
 <body>
 
+    <div class="channel-banner"></div>
+
     <div class="container">
-        <h1>THE CASTASTICS CHANNEL</h1>
+        
+        <div class="channel-header">
+            <img src="pfp.jpg" class="channel-pfp" alt="Channel PFP"> <div class="channel-details">
+                <h1>The Castastics Channel</h1>
+                <div class="sub-count">750K subscribers</div>
+                <button class="sub-btn" id="sub-button" onclick="toggleSubscribe()">Subscribe</button>
+            </div>
+        </div>
 
         <div id="video-display">
             <div id="player-container"></div>
@@ -257,6 +326,18 @@
                 </video>`;
 
             window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        /* INTERACTIVE SUBSCRIBE SYSTEM */
+        function toggleSubscribe() {
+            const btn = document.getElementById('sub-button');
+            if (btn.classList.contains('subscribed')) {
+                btn.classList.remove('subscribed');
+                btn.innerText = "Subscribe";
+            } else {
+                btn.classList.add('subscribed');
+                btn.innerText = "✓ Subscribed";
+            }
         }
     </script>
 </body>
