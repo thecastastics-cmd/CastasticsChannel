@@ -365,29 +365,44 @@
         }
 
         // 1. Instantly listen for live updates from Firebase globally
+        // 1. Instantly listen for live updates from Firebase globally & check local memory
         onValue(subRef, (snapshot) => {
             const currentCount = snapshot.val();
             if (countElement && currentCount !== null) {
                 countElement.innerText = formatSubs(currentCount) + " subscribers";
             }
+            
+            // Check if THIS specific browser already subscribed before the refresh
+            if (localStorage.getItem('isSubscribed') === 'true') {
+                subButton.classList.add('subscribed');
+                subButton.innerText = "✓ Subscribed";
+            }
         });
 
-        // 2. Add +1 to the database cloud when clicked
+        // 2. Add +1 (or subtract -1) and save state to browser memory
         function handleSubscribe() {
+            const isSubbed = subButton.classList.contains('subscribed');
+            
             runTransaction(subRef, (currentValue) => {
-                return (currentValue || 750000) + 1;
+                if (isSubbed) {
+                    // If already subbed, clicking again UNSUBSCRIBES (-1)
+                    return (currentValue || 750000) - 1;
+                } else {
+                    // If not subbed, clicking adds +1
+                    return (currentValue || 750000) + 1;
+                }
             });
             
-            subButton.classList.toggle('subscribed');
-            if(subButton.classList.contains('subscribed')) {
-                subButton.innerText = "Subscribed";
-            } else {
+            // Toggle the visual button styles and save the choice locally
+            if (isSubbed) {
+                subButton.classList.remove('subscribed');
                 subButton.innerText = "Subscribe";
+                localStorage.setItem('isSubscribed', 'false');
+            } else {
+                subButton.classList.add('subscribed');
+                subButton.innerText = "✓ Subscribed";
+                localStorage.setItem('isSubscribed', 'true');
             }
-        }
-
-        if (subButton) {
-            subButton.addEventListener("click", handleSubscribe);
         }
     </script>
 </body>
