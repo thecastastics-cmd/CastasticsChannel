@@ -380,11 +380,13 @@
         });
 
         // 2. Add +1 (or subtract -1) and save state to browser memory
+        // 2. Add +1 (or subtract -1) and save state to browser memory
         function handleSubscribe() {
-            const isSubbed = subButton.classList.contains('subscribed');
+            // Read directly from browser memory to see if they are already subbed
+            const alreadySubbed = localStorage.getItem('isSubscribed') === 'true';
             
             runTransaction(subRef, (currentValue) => {
-                if (isSubbed) {
+                if (alreadySubbed) {
                     // If already subbed, clicking again UNSUBSCRIBES (-1)
                     return (currentValue || 750000) - 1;
                 } else {
@@ -393,8 +395,8 @@
                 }
             });
             
-            // Toggle the visual button styles and save the choice locally
-            if (isSubbed) {
+            // Toggle the visual state and update the memory based on what just happened
+            if (alreadySubbed) {
                 subButton.classList.remove('subscribed');
                 subButton.innerText = "Subscribe";
                 localStorage.setItem('isSubscribed', 'false');
@@ -403,6 +405,10 @@
                 subButton.innerText = "✓ Subscribed";
                 localStorage.setItem('isSubscribed', 'true');
             }
+        }
+
+        if (subButton) {
+            subButton.addEventListener("click", handleSubscribe);
         }
     </script>
 </body>
