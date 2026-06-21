@@ -328,17 +328,40 @@
             window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
-        /* INTERACTIVE SUBSCRIBE SYSTEM */
+        /* INTERACTIVE SUBSCRIBE SYSTEM WITH REFRESH MEMORY */
         function toggleSubscribe() {
             const btn = document.getElementById('sub-button');
+            const subCount = document.querySelector('.sub-count');
+            
             if (btn.classList.contains('subscribed')) {
+                // Unsubscribing
                 btn.classList.remove('subscribed');
                 btn.innerText = "Subscribe";
+                if (subCount) subCount.innerText = "750K subscribers";
+                localStorage.setItem('isSubscribed', 'false'); // Save choice to browser memory
             } else {
+                // Subscribing
                 btn.classList.add('subscribed');
                 btn.innerText = "✓ Subscribed";
+                if (subCount) subCount.innerText = "751K subscribers";
+                localStorage.setItem('isSubscribed', 'true'); // Save choice to browser memory
             }
         }
+
+        // CHECK MEMORY AS SOON AS THE PAGE LOADS OR REFRESHES
+        document.addEventListener("DOMContentLoaded", function() {
+            const btn = document.getElementById('sub-button');
+            const subCount = document.querySelector('.sub-count');
+            
+            // Check if the user was already subscribed before the refresh
+            if (localStorage.getItem('isSubscribed') === 'true') {
+                if (btn) {
+                    btn.classList.add('subscribed');
+                    btn.innerText = "✓ Subscribed";
+                }
+                if (subCount) subCount.innerText = "751K subscribers";
+            }
+        });
     </script>
 </body>
 </html>
