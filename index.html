@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Castastics Channel</title>
+    <meta name="description" content="The Castastics Channel is the official hub to watch Castastics content! Discover an expansive universe featuring a large cast of unique characters, stories, movies, and more.">
     <style>
 
 
@@ -66,9 +67,14 @@
         }
         .sub-btn:hover { transform: scale(1.05); background: #ffe066; }
         .sub-btn.subscribed { background: #272727; color: #aaa; border: 1px solid #3e3e3e; }
-        body { background: #000; color: #ffcc00; font-family: 'Arial Black', sans-serif; margin: 0; padding: 20px; text-align: center; }
-        h1 { font-size: 3rem; text-shadow: 2px 2px #333; margin-bottom: 10px; text-transform: uppercase; }
-        .container { max-width: 1100px; margin: auto; }
+    body { 
+            background: #0d0d0d;
+            color: #ffcc00; 
+            font-family: 'Arial Black', sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            text-align: center; 
+    }
         
         /* THE DYNAMIC PLAYER AREA */
         #video-display { 
@@ -165,10 +171,323 @@
     height: 100%;
     border: none;
                }
+
+        /* --- SIDEBAR TOGGLE SYSTEM --- */
+        #castastics-interface {
+            display: flex;
+            min-height: 100vh;
+            background-color: #000000;
+            position: relative;
+        }
+
+        /* The hidden side panel drawer */
+        #app-sidebar {
+            position: fixed;
+            top: 0;
+            left: -260px; /* Hidden off-screen by default */
+            width: 260px;
+            height: 100vh;
+            background: #111111;
+            border-right: 2px solid #ffcc00;
+            display: flex;
+            flex-direction: column;
+            padding: 80px 20px 20px 20px; /* Extra top padding for toggle button room */
+            box-sizing: border-box;
+            text-align: left;
+            z-index: 1000;
+            transition: left 0.3s ease;
+        }
+
+        /* Dynamic active state when open */
+        #app-sidebar.open {
+            left: 0;
+        }
+
+        /* Main content wrapper updates */
+        #main-content { 
+            flex-grow: 1; 
+            width: 100%; 
+            overflow-x: hidden;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Pushes content smoothly over on desktop screens when sidebar opens */
+        @media (min-width: 769px) {
+            #castastics-interface.sidebar-active #main-content {
+                margin-left: 260px;
+                width: calc(100% - 260px);
+            }
+        }
+
+        /* THE HAMBURGER BUTTON */
+        .menu-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1100;
+            background: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: #000;
+            transition: 0.3s;
+        }
+
+        /* SIDEBAR INTERFACE TEXT & MENUS */
+        .sidebar-logo h2 { margin: 0; font-size: 1.3rem; color: #ffcc00; text-transform: uppercase; }
+        .sidebar-logo p { margin: 5px 0 25px 0; font-size: 0.8rem; color: #aaa; font-family: sans-serif; }
+        .nav-menu { list-style: none; padding: 0; margin: 0; flex-grow: 1; }
+        .nav-menu li { margin-bottom: 12px; }
+        .nav-item { display: block; padding: 12px 15px; color: #fff; text-decoration: none; border-radius: 6px; font-size: 0.9rem; font-family: sans-serif; transition: all 0.2s; }
+        .nav-item:hover, .nav-item.active { background: #ffcc00; color: #000; font-weight: bold; }
+        
+        /* --- INTEGRATED FOOTER AREA --- */
+        footer {
+            margin-top: 60px;
+            padding: 30px 20px;
+            border-top: 2px solid #1a1a1a;
+            background: #0a0a0a;
+            font-family: sans-serif;
+        }
+        .footer-socials { display: flex; justify-content: center; gap: 20px; margin-bottom: 15px; }
+        .footer-socials a { color: #aaa; text-decoration: none; font-size: 0.9rem; font-weight: bold; transition: color 0.2s; }
+        .footer-socials a:hover { color: #ffcc00; }
+        .copyright { color: #555; font-size: 0.8rem; margin: 0; }
+        /* --- VISUAL STACKED LAYOUT WITH CUSTOM IMAGES --- */
+        .tube-shop-layout {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px 10px 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+        .collection-shelf {
+            width: 100%;
+            text-align: left;
+        }
+        .shelf-title {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            margin: 0 0 10px 5px;
+            font-weight: bold;
+        }
+        .merch-shop-card {
+            background: #111111;
+            border: 2px solid #222;
+            border-radius: 16px;
+            overflow: hidden;
+            text-decoration: none;
+            display: block;
+            transition: border-color 0.2s;
+        }
+        .merch-shop-card:hover {
+            border-color: #ffcc00;
+        }
+        .merch-image-cover {
+            width: 100%;
+            height: 280px; /* Gives your custom artwork plenty of room */
+            background: #000;
+        }
+        .merch-image-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .merch-details-box {
+            padding: 15px;
+            background: #111;
+            border-top: 1px solid #222;
+        }
+        .merch-details-box h3 {
+            margin: 0 0 4px 0;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+        .merch-details-box p {
+            margin: 0;
+            color: #ffcc00;
+            font-size: 0.85rem;
+            font-family: sans-serif;
+        }
+
+        /* --- CONTACT BLOCK STYLES --- */
+        .contact-container {
+            max-width: 500px;
+            margin: 40px auto;
+            background: #111111;
+            border: 3px solid #ffcc00;
+            border-radius: 15px;
+            padding: 30px 20px;
+        }
+        .contact-btn {
+            display: inline-block;
+            background: #ffcc00;
+            color: #000;
+            padding: 14px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: 0.2s;
+            margin: 15px 0;
+            width: 80%;
+        }
+        .contact-btn:hover {
+            transform: scale(1.03);
+            background: #ffe066;
+        }
+        .contact-email {
+            color: #fff;
+            font-size: 1rem;
+            font-family: sans-serif;
+            margin-top: 15px;
+            word-break: break-all;
+        }
+        .contact-email a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+        .contact-email a:hover {
+            text-decoration: underline;
+        }
+
+            /* --- VISUAL TUBE-STYLE STACKED MERCH FEED --- */
+        .tube-shop-layout {
+            max-width: 650px; /* Perfectly frames standard Linktree layouts on all devices */
+            margin: 0 auto;
+            padding: 20px 10px 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 45px; /* Creates clean spacing between each major collection category */
+        }
+        
+        .collection-shelf {
+            text-align: left;
+            width: 100%;
+        }
+        
+        .shelf-title {
+            color: #ffcc00;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 0 12px 10px;
+            font-weight: bold;
+            border-left: 4px solid #ffcc00;
+            padding-left: 10px;
+        }
+        
+        .live-shelf-portal {
+            width: 100%;
+            height: 600px; /* Gives each visual store plenty of vertical display room */
+            border: 2px solid #1a1a1a;
+            border-radius: 16px;
+            background: #111111;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            transition: border-color 0.2s;
+        }
+        
+        .live-shelf-portal:hover {
+            border-color: #ffcc00;
+        }
+/* --- DIRECT SIDEBAR LOGO FIX --- */
+        .sidebar-logo {
+            text-align: center;
+            padding: 15px 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .sidebar-logo img {
+            width: 100%;
+            max-width: 130px; /* Adjust this to make the logo smaller or bigger */
+            height: auto;
+            display: block;
+            margin: 0 auto 5px;
+        }
+        .sidebar-logo p {
+            color: #888;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        /* --- RESPONSIVE CORNER ART STYLING --- */
+        .corner-art {
+            position: fixed;
+            height: auto;
+            pointer-events: none;
+            opacity: 0.95;
+            z-index: 9999;
+        }
+        /* Desktop coordinates */
+        .top-left { top: 0; left: 0; width: 180px; }
+        .top-right { top: 0; right: 0; width: 180px; }
+        .bottom-left { bottom: 0; left: 0; width: 180px; }
+        .bottom-right { bottom: 0; right: 0; width: 180px; }
+
+        /* 📱 MOBILE FIX: Shrink and nudge into the absolute edges */
+        @media (max-width: 768px) {
+            .top-left { 
+                width: 100px; 
+                top: -15px; 
+                left: -15px; 
+            }
+            .top-right { 
+                width: 100px; 
+                top: -15px; 
+                right: -15px; 
+            }
+            .bottom-left { 
+                width: 100px; 
+                bottom: -15px; 
+                left: -15px; 
+            }
+            .bottom-right { 
+                width: 100px; 
+                bottom: -15px; 
+                right: -15px; 
+            }
+        }
     </style>
 </head>
 <body>
+    <img src="ripped_top_right.png" alt="" style="position: fixed; top: -15px; right: -15px; width: 100px; height: auto; z-index: 9999; pointer-events: none; opacity: 0.95;">
+    <img src="ripped_bottom_left.png" alt="" style="position: fixed; bottom: -15px; left: -15px; width: 100px; height: auto; z-index: 9999; pointer-events: none; opacity: 0.95;">
+    <img src="ripped_bottom_right.png" alt="" style="position: fixed; bottom: -15px; right: -15px; width: 100px; height: auto; z-index: 9999; pointer-events: none; opacity: 0.95;">
+    <button class="menu-toggle" onclick="toggleSidebar()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
 
+    <div id="castastics-interface">
+
+        <nav id="app-sidebar">
+            <div class="sidebar-logo">
+                <img src="logo.png" alt="The Castastics">
+                <p>Official Navigation</p>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-item active" onclick="switchPage('home')">Home</a></li>
+                <li><a href="#" class="nav-item" onclick="switchPage('merch')">Merch</a></li>
+                <li><a href="#" class="nav-item" onclick="switchPage('contact')">Contact</a></li>
+            </ul>
+        </nav>
+        <div id="main-content">
+            <div id="page-home" class="app-page">
     <div class="channel-banner"></div>
 
     <div class="container">
@@ -176,16 +495,61 @@
         <div class="channel-header">
             <img src="pfp.jpg" class="channel-pfp" alt="Channel PFP"> <div class="channel-details">
                 <h1>The Castastics Channel</h1>
-                <div class="sub-count"><span id="sub-count-text">Loading subscribers...</span> • 1,042,583 views</div>
+                <div class="sub-count">
+    <span id="sub-count-text">Loading subscribers...</span> • 
+    <span id="view-count-text">Loading views...</span>
+                </div>
                 <div class="channel-links">
-            <a href="https://twitch.tv/davidartsylive" target="_blank">🟣 Twitch</a>
+            <a href="https://www.amazon.com/s?i=mobile-apps&rh=p_4%3AThe%2BCastastics&search-type=ss" target="_blank">📦 Games On Amazon Appstore</a>
             <a href="https://www.amazon.com/stores/David-Artsy/author/B0CVR21P9C?ref=ap_rdr&shoppingPortalEnabled=true" target="_blank">📚 Buy Comics</a>
             <a href="https://open.spotify.com/artist/64kJiIpqeckLgcpOXd2eVT?si=jR_qscNdTqSAcTR9DfzqSw" target="_blank">🎵 Stream Music</a>
-            <a href="https://castasticsontherun.vercel.app/" target="_blank">🎮 Play Castastics Game</a>
- <a href="https://thecastastics.netlify.app/merch" target="_blank">👕 Grab Merch</a>
- <a href="https://payhip.com/Castasticstoys" target="_blank">🧸 Get Castastics Toys</a>
+            <a href="https://apkpure.com/developer?id=24485827" target="_blank">🎮 Play Castastics Games</a>
+
+                    <div id="subscriber-perks-box" style="max-width: 800px; margin: 20px auto; padding: 20px; background: #111; border: 2px dashed #444; border-radius: 8px; font-family: sans-serif; text-align: center;">
+    
+    <div id="perks-locked" style="display: block; padding: 20px;">
+        <span style="font-size: 2rem;">🔒</span>
+        <h3 style="color: #ffcc00; margin: 10px 0 5px 0;">Subscriber Exclusive Content Locked</h3>
+        <p style="color: #aaa; font-size: 0.9rem; margin: 0;">Hit the yellow **SUBSCRIBE** button above to unlock premium local rewards!</p>
+    </div>
+
+    <div id="perks-unlocked" style="display: none;">
+        <h2 style="color: #ffcc00; margin-top: 0; font-size: 1.4rem;">🎉 THANK YOU FOR SUBSCRIBING! 🎉</h2>
+        <p style="color: #eee; font-size: 0.95rem; margin-bottom: 20px;">You've unlocked exclusive access to David Artsy's premium subscriber services:</p>
+        
+        <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
+            
+            <div style="background: #1c1c1c; border: 1px solid #ffcc00; border-radius: 6px; padding: 15px; width: 280px; text-align: center;">
+                <img src="chicken_chips.jpg" alt="Chicken and Chips" style="width: 100%; height: 160px; object-fit: cover; border-radius: 4px; margin-bottom: 10px;">
+                <h4 style="color: #fff; margin: 5px 0;">Trini Chicken & Chips Combo</h4>
+                <p style="color: #ccc; font-size: 0.85rem; margin: 0 0 10px 0;">Get a hot, fresh box of chicken & chips with a cold drink delivered straight to your home.</p>
+                <span style="display: block; background: #333; color: #ffcc00; font-size: 0.75rem; font-weight: bold; padding: 3px; border-radius: 3px;">🇹🇹 TRINIDAD ONLY</span>
+            </div>
+
+            <div style="background: #1c1c1c; border: 1px solid #ffcc00; border-radius: 6px; padding: 15px; width: 280px; text-align: center;">
+                <img src="david_singing.jpg" alt="David Artsy Singing" style="width: 100%; height: 160px; object-fit: cover; border-radius: 4px; margin-bottom: 10px;">
+                <h4 style="color: #fff; margin: 5px 0;">Special Occasion Serenade</h4>
+                <p style="color: #ccc; font-size: 0.85rem; margin: 0 0 10px 0;">Want me to perform live or record a custom romantic track for a birthday or special event?</p>
+                <span style="display: block; background: #333; color: #ffcc00; font-size: 0.75rem; font-weight: bold; padding: 3px; border-radius: 3px;">🎤 CUSTOM PERFORMANCE</span>
+            </div>
+
+        </div>
+
+        <div style="margin-top: 25px;">
+            <p style="color: #aaa; font-size: 0.85rem; margin-bottom: 8px;">To claim your rewards or book a service, tap below to contact me directly:</p>
+            <a href="https://wa.me/18683917461" target="_blank" style="display: inline-block; background: #ffcc00; color: #000; text-decoration: none; font-weight: bold; padding: 12px 24px; border-radius: 4px; font-size: 0.95rem;">Contact David Artsy to Claim</a>
+        </div>
+    </div>
+                    </div>
+
                 </div>
                 <button class="sub-btn" id="sub-button">Subscribe</button>
+            </div>
+            <div class="channel-description-box" style="padding: 15px 20px; text-align: center; max-width: 800px; margin: 0 auto 20px auto;">
+    <p style="color: #cccccc; font-size: 1.05rem; line-height: 1.6; font-family: sans-serif; margin: 0;">
+        Welcome to <strong style="color: #ffcc00;">The Castastics Channel</strong>, 🐾 The Castastics is a multimedia franchise created by David Artsy consist of movies, shows, games, comics, books, merch and more!🖌 
+Castastics is a world of large casts of unique characters and make all dreams come true! Many stories to tell within the CastasticVerse! 🌟
+    </p>
             </div>
         </div>
 <div class="trailers-section">
@@ -206,53 +570,85 @@
             <div id="player-container"></div>
             <div id="now-playing">SELECT A STORY TO START</div>
         </div>
+<div id="media-interaction-box" style="display: none; max-width: 800px; margin: 20px auto; padding: 15px; background: #111; border-radius: 8px; border: 1px solid #222; font-family: sans-serif;">
+            
+            <div class="rating-container" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 15px;">
+                <div>
+                    <h3 id="rating-title" style="color: #fff; margin: 0 0 5px 0; font-size: 1.1rem;">Ratings for This Media</h3>
+                    <div style="color: #ffcc00; font-size: 1.2rem;">
+                        <span id="average-stars">⭐⭐⭐⭐⭐</span> 
+                        <span id="average-rating-text" style="color: #aaa; font-size: 0.9rem; margin-left: 5px;">(5.0/5)</span>
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <span style="color: #aaa; font-size: 0.85rem; display: block; margin-bottom: 5px;">Leave a Rating:</span>
+                    <select id="user-star-input" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px; border-radius: 4px;">
+                        <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+                        <option value="4">⭐⭐⭐⭐ (4)</option>
+                        <option value="3">⭐⭐⭐ (3)</option>
+                        <option value="2">⭐⭐ (2)</option>
+                        <option value="1">⭐ (1)</option>
+                    </select>
+                </div>
+            </div>
 
+            <h3 style="color: #fff; margin: 0 0 15px 0; font-size: 1.1rem;">Community Comments</h3>
+            
+            <div id="comments-list" style="max-height: 300px; overflow-y: auto; margin-bottom: 15px; padding-right: 5px;">
+                </div>
+
+            <div class="comment-input-form" style="display: flex; gap: 10px;">
+                <input type="text" id="comment-username" placeholder="Your Name" style="width: 25%; background: #222; color: #fff; border: 1px solid #333; padding: 10px; border-radius: 4px; font-size: 0.9rem;">
+                <input type="text" id="comment-text" placeholder="Add a public comment..." style="width: 60%; background: #222; color: #fff; border: 1px solid #333; padding: 10px; border-radius: 4px; font-size: 0.9rem;">
+                <button onclick="submitComment()" style="width: 15%; background: #ffcc00; color: #000; border: none; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer;">Post</button>
+            </div>
+</div>
         <div class="section-title">CASTASTICS MOVIES</div>
 <div class="grid">
     <!-- MOVIE 1 -->
-    <div class="card" onclick="playMedia('https://www.dropbox.com/scl/fi/asw36zly5e8gtoaiqtw8s/The-Castastics-Movie.mp4?rlkey=nqqr5pzt0u41pp4flh3e35u2l&st=e5w5jr2p&raw=1', 'The Castastics Movie')">
+    <div class="card" onclick="playMedia('https://www.dropbox.com/scl/fi/asw36zly5e8gtoaiqtw8s/The-Castastics-Movie.mp4?rlkey=nqqr5pzt0u41pp4flh3e35u2l&st=e5w5jr2p&raw=1', 'The Castastics Movie'); registerVideoView(); loadMediaInteraction('movie1');">
         <img src="posters/movie1.jpg">
         <p class="movie-title">The Castastics Movie</p>
         <p class="movie-desc">David, a 16 yr old boy who dreams of becoming an artist ever since, created books based upon his childhood and with the help of his magical castastian friends lives in his house. His goal is to get his artwork known.</p>
     </div>
     
     <!-- MOVIE 2 -->
-    <div class="card" onclick="playMedia('https://www.dropbox.com/scl/fi/3qisp19s9zd7c0cf46hlm/The-Castastics-2_-Into-The-CastasticVerse-Full-Movie.mp4?rlkey=5cewkcfmpppi4t0h60s6pgpde&st=829h902b&raw=1', 'The Castastics 2: Into The CastasticVerse')">
+    <div class="card" onclick="playMedia('https://www.dropbox.com/scl/fi/3qisp19s9zd7c0cf46hlm/The-Castastics-2_-Into-The-CastasticVerse-Full-Movie.mp4?rlkey=5cewkcfmpppi4t0h60s6pgpde&st=829h902b&raw=1', 'The Castastics 2: Into The CastasticVerse'); registerVideoView(); loadMediaInteraction('movie2');">
         <img src="posters/movie2.jpg">
         <p class="movie-title">The Castastics 2: Into The CastasticVerse</p>
         <p class="movie-desc">The second movie of the series. David, a 20 yr old, a famous author and completed his dreams of being an artist to get his work known. He off to a new chapter in his life, getting his dream girl, Shiann, who is now back in Trinidad. The Castastians also have to stop Jael, David's former crush from destroying the CastasticVerse.</p>
     </div>
     
     <!-- MOVIE 3 -->
-    <div class="card" onclick="playMedia('https://www.dropbox.com/scl/fi/2tovxadce8bp9dwah4gah/The-Castastics-3_-Brookhaven-Full-Movie.mp4?rlkey=0m66e3wflx5tjlaroph9eyocj&st=gg8ermz6&raw=1', 'The Castastics 3: Brookhaven')">
+    <div class="card" onclick="playMedia('https://www.dropbox.com/scl/fi/2tovxadce8bp9dwah4gah/The-Castastics-3_-Brookhaven-Full-Movie.mp4?rlkey=0m66e3wflx5tjlaroph9eyocj&st=gg8ermz6&raw=1', 'The Castastics 3: Brookhaven'); registerVideoView(); loadMediaInteraction('movie3');">
         <img src="posters/movie3.jpg">
         <p class="movie-title">The Castastics 3: Brookhaven</p>
         <p class="movie-desc">David, now an adult have adopted a kid, BabyDavid and take care of him but is feeling sad about Shiann being a gold digger and she was not who she was. But then, Emily Moraldo (David's first crush from SJS) came back to David's life and soon they both create an artsy family together.</p>
     </div>
     
     <!-- MOVIE 4 -->
-    <div class="card" onclick="playMedia('https://www.dropbox.com/scl/fi/9qadd7cooyx87pe8g9ano/The-Castastics-4_-Castastic-Heroes-FULL-MOVIE.mp4?rlkey=kgc216e0vk856qjf45jmwt866&st=09l357jj&raw=1', 'The Castastics 4: Castastic Heroes')">
+    <div class="card" onclick="playMedia('https://www.dropbox.com/scl/fi/9qadd7cooyx87pe8g9ano/The-Castastics-4_-Castastic-Heroes-FULL-MOVIE.mp4?rlkey=kgc216e0vk856qjf45jmwt866&st=09l357jj&raw=1', 'The Castastics 4: Castastic Heroes'); registerVideoView(); loadMediaInteraction('movie4');">
         <img src="posters/movie4.jpg">
         <p class="movie-title">The Castastics 4: Castastic Heroes</p>
         <p class="movie-desc">In a brand new era, after BabyDavid Jr. defeated Gabby and imprison her for good, her daughter take matters within her own hands and destroys the Castastics World that David worked so hard to build, so the Castastians, BabyDavid, BabyBrian, Iesha, Azariah, Elijah, and new friends alike step up and became heroes. Took place within David's creative world he built in his books and drawings.</p>
     </div>
     
     <!-- MOVIE 5 -->
-    <div class="card" onclick="playMedia('https://www.dropbox.com/scl/fi/gqg8okmhswfvc43pvh5mw/The-Castastics-5_-The-Final-Battle.mp4?rlkey=nytboa0t5gyndninod65inovf&st=1udj3j8x&raw=1', 'The Castastics 5: The Final Battle')">
+    <div class="card" onclick="playMedia('https://www.dropbox.com/scl/fi/gqg8okmhswfvc43pvh5mw/The-Castastics-5_-The-Final-Battle.mp4?rlkey=nytboa0t5gyndninod65inovf&st=1udj3j8x&raw=1', 'The Castastics 5: The Final Battle'); registerVideoView(); loadMediaInteraction('movie5');">
         <img src="posters/movie5.jpg">
         <p class="movie-title">The Castastics 5: The Final Battle</p>
         <p class="movie-desc">Talos returns to destroy the Castastics world David created, a world where no one can ever die and live in peace and harmony, now its up to the castastians to protect their world no matter what.</p>
     </div>
     
     <!-- MOVIE 6 -->
-    <div class="card" onclick="playMedia('https://www.dropbox.com/scl/fi/3gftio24dikq9fkhwtccm/The-Super-Toys-A-Castastics-Story.mp4?rlkey=01gzkpx99jw9r5fron96t260f&st=eiezm8gw&raw=1', 'The Super Toys (A Castastics Story)')">
+    <div class="card" onclick="playMedia('https://www.dropbox.com/scl/fi/3gftio24dikq9fkhwtccm/The-Super-Toys-A-Castastics-Story.mp4?rlkey=01gzkpx99jw9r5fron96t260f&st=eiezm8gw&raw=1', 'The Super Toys (A Castastics Story)'); registerVideoView(); loadMediaInteraction('movie6');">
         <img src="posters/movie6.jpg">
         <p class="movie-title">The Super Toys</p>
         <p class="movie-desc">Mr. Fruitó strikes again but decides to change his ways for good.</p>
     </div>
     
     <!-- MOVIE 7 -->
-    <div class="card" onclick="playMedia('https://www.dropbox.com/scl/fi/hymc8ynygh76oev3vlq5s/The-Idiotastics-Movie-A-Castastics-Story.mp4?rlkey=ukb8jjdm9nwjtu69klm5zwe2h&st=x8erf7ek&raw=1', 'The Idiotastics Movie (A Castastics Story)')">
+    <div class="card" onclick="playMedia('https://www.dropbox.com/scl/fi/hymc8ynygh76oev3vlq5s/The-Idiotastics-Movie-A-Castastics-Story.mp4?rlkey=ukb8jjdm9nwjtu69klm5zwe2h&st=x8erf7ek&raw=1', 'The Idiotastics Movie (A Castastics Story)'); registerVideoView(); loadMediaInteraction('movie7');">
         <img src="posters/movie7.jpg">
         <p class="movie-title">The Idiotastics Movie</p>
         <p class="movie-desc">Brian, David's autistic and not so smart music lover, completed his dreams of being a musician and even meeting lady gaga, his idol.</p>
@@ -265,7 +661,7 @@
             <div class="card">
                 <img src="posters/castastics_show.jpg">
                 <p>The Castastics</p>
-                <select onchange="playMedia(this.value, 'The Castastics ' + this.options[this.selectedIndex].text)">
+                <select onchange="playMedia(this.value, 'The Castastics ' + this.options[this.selectedIndex].text); if(this.value) { registerVideoView(); loadMediaInteraction('castastics_show'); }">
                     <option value="">Select Episode</option>
                     
                         
@@ -370,7 +766,7 @@
             <div class="card">
                 <img src="posters/idiotastics_show.jpg">
                 <p>The Idiotastics</p>
-                <select onchange="playMedia(this.value, 'The Idiotastics ' + this.options[this.selectedIndex].text)">
+                <select onchange="playMedia(this.value, 'The Idiotastics ' + this.options[this.selectedIndex].text); if(this.value) { registerVideoView(); loadMediaInteraction('idiotastics_show'); }">
                     <option value="">Select Episode</option>
                     <optgroup label="Season 1">
                         <option value="https://www.dropbox.com/scl/fi/stktzu7p1ivukwgruobta/The-Idiotastics-S1-EP-1-Rover-the-green-alien-pup-got-a-msg-for-you.mp4?rlkey=ymnwcka58ubmloqceer661tr6&st=2zdht4i9&raw=1">Ep 1: Rover</option>
@@ -401,7 +797,7 @@
             <div class="card">
                 <img src="posters/tales.jpg">
                 <p>Tales Of The Castastics</p>
-                <select onchange="playMedia(this.value, 'Tales Of The Castastics' + this.options[this.selectedIndex].text)">
+                <select onchange="playMedia(this.value, 'Tales Of The Castastics' + this.options[this.selectedIndex].text); if(this.value) { registerVideoView(); loadMediaInteraction('totc_show'); }">
                     <option value="">Select Episode</option>
                     <optgroup label="Season 1">
                         <option value="https://www.dropbox.com/scl/fi/k3rm4y67wn63c51olpbds/b1f5225698ae11e0e6b9faebb3f99ec2.mp4?rlkey=k8tva8g3bi05tzio739imu0qj&st=m29okd8p&raw=1">Ep 1: David Draws</option>
@@ -504,20 +900,454 @@
             });
             
             // Toggle the visual state and update the memory based on what just happened
+            const toast = document.getElementById("custom-toast");
+            
+            // Tiny helper function to show your smooth yellow bubble message
+            function showSubToast(message) {
+                if (toast) {
+                    toast.innerText = message;
+                    toast.style.display = "block";
+                    setTimeout(() => {
+                        toast.style.display = "none";
+                    }, 3000);
+                }
+            }
+
             if (alreadySubbed) {
                 subButton.classList.remove('subscribed');
                 subButton.innerText = "Subscribe";
                 localStorage.setItem('isSubscribed', 'false');
+                
+                // Show clean toast notification (No alerts!)
+                showSubToast("Unsubscribed successfully.");
             } else {
                 subButton.classList.add('subscribed');
                 subButton.innerText = "✓ Subscribed";
                 localStorage.setItem('isSubscribed', 'true');
+                
+                // Show clean toast notification (No alerts!)
+                showSubToast("Subscribed successfully!");
             }
+
+            // 🌟 UNLOCK/LOCK YOUR PERKS INSTANTLY
+            checkSubscriberPerks();
         }
 
+        // Your existing sub button event listener remains clean inside the script
         if (subButton) {
             subButton.addEventListener("click", handleSubscribe);
         }
+
+        // Function to handle switching the perks view smoothly
+        function checkSubscriberPerks() {
+            const lockedBox = document.getElementById("perks-locked");
+            const unlockedBox = document.getElementById("perks-unlocked");
+            const mainBox = document.getElementById("subscriber-perks-box");
+
+            // Check if user is marked as subscribed in localStorage
+            if (localStorage.getItem("isSubscribed") === "true") {
+                if (lockedBox) lockedBox.style.display = "none";
+                if (unlockedBox) unlockedBox.style.display = "block";
+                if (mainBox) mainBox.style.border = "1px solid #ffcc00"; // Sleek solid boundary when active
+            } else {
+                if (lockedBox) lockedBox.style.display = "block";
+                if (unlockedBox) unlockedBox.style.display = "none";
+                if (mainBox) mainBox.style.border = "2px dashed #444";
+            }
+        }
+
+        // Call it immediately on page load to check their subscription status right away
+        window.addEventListener("DOMContentLoaded", () => {
+            checkSubscriberPerks();
+        });
     </script>
+
+                <script type="module">
+        import { initializeApp, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // Your exact same config so this separate script can access Firebase safely
+        const firebaseConfig = {
+            apiKey: "AIzaSyBBx7S1tbTO02Y0TfSYodqJWRvLfQwq_Qs",
+            authDomain: "castastics-movies.firebaseapp.com",
+            databaseURL: "https://castastics-movies-default-rtdb.firebaseio.com",
+            projectId: "castastics-movies",
+            storageBucket: "castastics-movies.firebasestorage.app",
+            messagingSenderId: "194457932457",
+            appId: "1:194457932457:web:72e3372596f4f248a30fb8",
+            measurementId: "G-W59DD5SNZ6"
+        };
+
+        // Initialize Firebase safely for this module
+        let app;
+        try {
+            app = getApp(); // Try to use the already initialized app
+        } catch (e) {
+            app = initializeApp(firebaseConfig); // If not found, initialize it here
+        }
+
+        const db = getDatabase(app);
+        const viewRef = ref(db, 'viewCount');
+        const viewElement = document.getElementById("view-count-text");
+
+        // 1. Listen for live view count updates from Firebase
+        onValue(viewRef, (snapshot) => {
+            const currentViews = snapshot.val();
+            if (viewElement && currentViews !== null) {
+                // Formats the number with commas (e.g., 1,042,583 views)
+                viewElement.innerText = currentViews.toLocaleString() + " views";
+            }
+        });
+
+        // 2. Function to add +1 view when a video or episode is selected
+        function registerVideoView() {
+            runTransaction(viewRef, (currentValue) => {
+                // If database node doesn't exist yet, starts at your baseline count
+                return (currentValue || 1042583) + 1;
+            });
+        }
+
+        // Send the function to the global window scope so your HTML onclicks/onchanges can find it
+        window.registerVideoView = registerVideoView;
+                </script>
+
+
+                <script type="module">
+        import { initializeApp, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onValue, runTransaction, push, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // Your exact same config so this script connects completely independently
+        const firebaseConfig = {
+            apiKey: "AIzaSyBBx7S1tbTO02Y0TfSYodqJWRvLfQwq_Qs",
+            authDomain: "castastics-movies.firebaseapp.com",
+            databaseURL: "https://castastics-movies-default-rtdb.firebaseio.com",
+            projectId: "castastics-movies",
+            storageBucket: "castastics-movies.firebasestorage.app",
+            messagingSenderId: "194457932457",
+            appId: "1:194457932457:web:72e3372596f4f248a30fb8",
+            measurementId: "G-W59DD5SNZ6"
+        };
+
+        // Initialize Firebase safely for this module
+        let app;
+        try {
+            app = getApp(); 
+        } catch (e) {
+            app = initializeApp(firebaseConfig); 
+        }
+
+        const db = getDatabase(app);
+        
+        // Track which movie/show is currently selected (Default to movie1)
+        window.currentMediaId = "movie1"; 
+
+        // Baseline "High-Tier" Pre-existing comments to seed the database if it's brand new
+        const defaultSeeds = {
+            movie1: {
+                rating: { totalStars: 25, count: 5 },
+                comments: {
+                    "seed1": { name: "ArtsyFan_99", text: "This movie is literal perfection! Love the character designs! 🔥" },
+                    "seed2": { name: "RobloxDev_Trini", text: "Incredible storytelling. David really brought his childhood books to life perfectly." }
+                }
+            },
+            movie2: {
+                rating: { totalStars: 30, count: 6 },
+                comments: {
+                    "seed1": { name: "CastasticsStan", text: "Into the CastasticVerse went completely crazy! Jael was an awesome villain." },
+                    "seed2": { name: "BrianTheFool_Fan", text: "The soundtrack during the Trinidad scenes was beautiful." }
+                }
+            },
+            movie3: {
+                rating: { totalStars: 24, count: 5 },
+                comments: {
+                    "seed1": { name: "StoryLover", text: "BabyDavid is so cute! Seeing Emily come back into his life made me so happy." }
+                }
+            },
+            movie4: {
+                rating: { totalStars: 35, count: 7 },
+                comments: {
+                    "seed1": { name: "EpicGamer", text: "The action in this one went crazy! True superhero vibe status." }
+                }
+            },
+            castastics_show: {
+                rating: { totalStars: 48, count: 10 },
+                comments: {
+                    "seed1": { name: "ClassicViewer", text: "Ep 2 with the Evil Toys is a masterpiece lol. Keep it up!" },
+                    "seed2": { name: "V_vs_Numbers", text: "Letters vs Numbers episode was legendary." }
+                }
+            }
+        };
+
+        let unsubscribeComments = null;
+
+        // Load media data whenever a user switches movies or episodes
+        function loadMediaInteraction(mediaId) {
+            window.currentMediaId = mediaId;
+            const box = document.getElementById("media-interaction-box");
+            if (box) box.style.display = "block";
+            
+            // Clean up old active listeners
+            if (unsubscribeComments) unsubscribeComments();
+
+            const mediaRef = ref(db, 'mediaStats/' + mediaId);
+
+            unsubscribeComments = onValue(mediaRef, (snapshot) => {
+                let data = snapshot.val();
+                
+                // If this specific media has absolutely no data in Firebase yet, seed it with high ratings/comments
+                if (!data && defaultSeeds[mediaId]) {
+                    set(mediaRef, defaultSeeds[mediaId]);
+                    data = defaultSeeds[mediaId];
+                }
+
+                // --- Render Ratings ---
+                const ratingData = data?.rating || { totalStars: 5, count: 1 };
+                const avg = (ratingData.totalStars / ratingData.count).toFixed(1);
+                document.getElementById("average-rating-text").innerText = `(${avg}/5 from ${ratingData.count} reviews)`;
+                document.getElementById("average-stars").innerText = "⭐".repeat(Math.round(avg));
+
+                // --- Render Comments ---
+                const commentsListElement = document.getElementById("comments-list");
+                commentsListElement.innerHTML = ""; // Clear existing list
+                
+                if (data?.comments) {
+                    Object.values(data.comments).reverse().forEach(comment => {
+                        const commentDiv = document.createElement("div");
+                        commentDiv.style.cssText = "background: #1c1c1c; padding: 10px; margin-bottom: 8px; border-radius: 4px; border-left: 3px solid #ffcc00;";
+                        commentDiv.innerHTML = `<strong style="color: #ffcc00; font-size: 0.85rem; display:block; margin-bottom:2px;">@${comment.name}</strong>
+                                                <span style="color: #eee; font-size: 0.9rem;">${comment.text}</span>`;
+                        commentsListElement.appendChild(commentDiv);
+                    });
+                } else {
+                    commentsListElement.innerHTML = `<p style="color: #666; font-size: 0.9rem; text-align: center;">No comments yet. Be the first!</p>`;
+                }
+            });
+        }
+
+        // Action when a user updates the star rating dropdown
+        function submitRating() {
+            const selectEl = document.getElementById("user-star-input");
+            const selectedStarValue = parseInt(selectEl.value);
+            const ratingRef = ref(db, `mediaStats/${window.currentMediaId}/rating`);
+
+            runTransaction(ratingRef, (currentRating) => {
+                if (!currentRating) {
+                    return { totalStars: selectedStarValue, count: 1 };
+                }
+                return {
+                    totalStars: currentRating.totalStars + selectedStarValue,
+                    count: currentRating.count + 1
+                };
+            });
+        }
+
+        // Action when a user clicks 'Post' comment (Now submits rating too!)
+        function submitComment() {
+            const nameInput = document.getElementById("comment-username");
+            const textInput = document.getElementById("comment-text");
+            const selectEl = document.getElementById("user-star-input");
+            const toast = document.getElementById("custom-toast");
+            
+            const storageKey = 'hasCommented_' + window.currentMediaId;
+
+            // Helper function to handle showing the sleek toast notification
+            function showToast(message) {
+                if (toast) {
+                    toast.innerText = message;
+                    toast.style.display = "block";
+                    setTimeout(() => {
+                        toast.style.display = "none";
+                    }, 3000);
+                }
+            }
+
+            // 1. Check if this browser already left a comment on this media
+            if (localStorage.getItem(storageKey) === 'true') {
+                showToast("You've already shared your thoughts on this one!");
+                textInput.value = ""; 
+                return; 
+            }
+
+            const name = nameInput.value.trim() || "AnonymousCastastian";
+            const text = textInput.value.trim();
+
+            if (!text) return; // Prevent empty posts
+
+            // Get the selected star value from the dropdown menu
+            const selectedStarValue = parseInt(selectEl.value);
+
+            // References for Firebase
+            const commentsRef = ref(db, `mediaStats/${window.currentMediaId}/comments`);
+            const ratingRef = ref(db, `mediaStats/${window.currentMediaId}/rating`);
+            const newCommentRef = push(commentsRef);
+            
+            // 2. Submit the text comment to Firebase
+            set(newCommentRef, { name: name, text: text }).then(() => {
+                
+                // 3. Simultaneously update the star ratings and count in Firebase
+                runTransaction(ratingRef, (currentRating) => {
+                    if (!currentRating) {
+                        return { totalStars: selectedStarValue, count: 1 };
+                    }
+                    return {
+                        totalStars: currentRating.totalStars + selectedStarValue,
+                        count: currentRating.count + 1
+                    };
+                });
+
+                // Lock it in browser memory
+                localStorage.setItem(storageKey, 'true');
+                
+                // Show the toast notification
+                showToast("Thank you for commenting!");
+                
+                textInput.value = ""; // Clear input bar cleanly
+            });
+        }
+
+        // Bind functions globally to window scope
+        window.loadMediaInteraction = loadMediaInteraction;
+        window.submitRating = submitRating;
+        window.submitComment = submitComment;
+
+        
+                </script>
+
+    </div> 
+
+
+<div id="page-merch" class="app-page" style="display: none;">
+        <div class="tube-shop-layout">
+            
+            <div class="collection-shelf">
+                <div class="shelf-title">Grab DVDs & CDs</div>
+                <a href="https://kunaki.com/MSales.asp?PublisherId=228185&PP=1" target="_blank" class="merch-shop-card">
+                    <div class="merch-image-cover">
+                        <img src="merch_cds.jpg" alt="Physical DVDS/CDs">
+                    </div>
+                    <div class="merch-details-box">
+                        <h3>Physical Dvds and Cds</h3>
+                        <p>Music and Movie Collection</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="collection-shelf">
+                <div class="shelf-title">Castastics Toys</div>
+                <a href="https://payhip.com/Castasticstoys" target="_blank" class="merch-shop-card">
+                    <div class="merch-image-cover">
+                        <img src="merch_toys.jpg" alt="Castastics Toys">
+                    </div>
+                    <div class="merch-details-box">
+                        <h3>Castastics Toys</h3>
+                        <p>12 Products</p>
+                    </div>
+                </a>
+            </div>
+            <div class="collection-shelf">
+                <div class="shelf-title">Physical Books</div>
+                <a href="https://www.walmart.com/browse/0?facet=brand:David+Artsy" target="_blank" class="merch-shop-card">
+                    <div class="merch-image-cover">
+                        <img src="merch_books.jpg" alt="Physical Books">
+                    </div>
+                    <div class="merch-details-box">
+                        <h3>Physical Books</h3>
+                        <p>Comics and Novels</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="collection-shelf">
+                <div class="shelf-title">Merchandise</div>
+                <a href="https://thecastasticstore.threadless.com/" target="_blank" class="merch-shop-card">
+                    <div class="merch-image-cover">
+                        <img src="merch_general.jpg" alt="Merchandise">
+                    </div>
+                    <div class="merch-details-box">
+                        <h3>Merchandise</h3>
+                        <p>Clothing, Stickers, Artworks, Bags etc</p>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+</div>
+    <div id="page-contact" class="app-page" style="display: none;">
+        <div class="container">
+            <div class="section-title">CONTACT & INQUIRIES</div>
+            <div class="contact-container">
+                <h2 style="color:#ffcc00; margin-top:0;">GET IN TOUCH</h2>
+                <p style="color:#aaa; font-family:sans-serif; font-size:0.9rem; margin-bottom:25px;">
+                    For orders, inquires, or a question, shoot a message directly below.
+                </p>
+                <a href="https://wa.me/18683917461" target="_blank" class="contact-btn">Contact on WhatsApp</a>
+                <div class="contact-email">
+                    Or Email: <br>
+                    <a href="mailto:therealzdavidtheartist@gmail.com">therealzdavidtheartist@gmail.com</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div style="text-align: center; padding-bottom: 20px;">
+            <img src="logo.png" alt="The Castastics Logo" style="max-width: 140px; height: auto; opacity: 0.85;">
+        </div>
+        <div class="footer-socials">
+            <a href="https://www.facebook.com/thedavidartsy/" target="_blank">Facebook</a>
+            <a href="https://www.instagram.com/itsdavidartsy/" target="_blank">Instagram</a>
+            <a href="https://m.twitch.tv/davidartsylive/about" target="_blank">Twitch</a>
+            <a href="https://www.tiktok.com/@realdavidartsy/" target="_blank">TikTok</a>
+            <a href="https://youtube.com/@davidartsy" target="_blank">Youtube</a>
+            <a href="https://www.snapchat.com/@thecastastics" target="_blank">Snapchat</a>
+        </div>
+        <p class="copyright">&copy; 2026 Castastics. All Rights Reserved.</p>
+    </footer>
+
+</div> </div> <script>
+    // Toggle action handler for sidebar
+    function toggleSidebar() {
+        var sidebar = document.getElementById('app-sidebar');
+        var wrapper = document.getElementById('castastics-interface');
+        if (sidebar && wrapper) {
+            sidebar.classList.toggle('open');
+            wrapper.classList.toggle('sidebar-active');
+        }
+    }
+
+    // Dynamic Page Switching Logic
+    function switchPage(pageId) {
+        var pages = document.querySelectorAll('.app-page');
+        pages.forEach(function(p) {
+            p.style.display = 'none';
+        });
+
+        var targetPage = document.getElementById('page-' + pageId);
+        if (targetPage) {
+            targetPage.style.display = 'block';
+        }
+
+        var navItems = document.querySelectorAll('.nav-menu .nav-item');
+        navItems.forEach(function(item) {
+            item.classList.remove('active');
+        });
+        
+        if (window.event && window.event.currentTarget) {
+            window.event.currentTarget.classList.add('active');
+        }
+
+        var sidebar = document.getElementById('app-sidebar');
+        var wrapper = document.getElementById('castastics-interface');
+        if (sidebar && wrapper) {
+            sidebar.classList.remove('open');
+            wrapper.classList.remove('sidebar-active');
+        }
+        
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+</script>
+    <div id="custom-toast" style="display: none; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #ffcc00; color: #000; padding: 12px 24px; border-radius: 25px; font-family: sans-serif; font-weight: bold; font-size: 0.95rem; box-shadow: 0px 4px 15px rgba(0,0,0,0.5); z-index: 99999; text-align: center; min-width: 250px;">
+    Thank you for commenting!
+    </div>
 </body>
 </html>
