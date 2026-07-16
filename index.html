@@ -1066,10 +1066,23 @@ Castastics is a world of large casts of unique characters and make all dreams co
                     <strong>Produced By:</strong> BrianTheFool
                 </div>
             </div>
-
+            
             <div class="card">
                 <img src="posters/tales.jpg">
-                <p>Tales Of The Castastics</p>
+                <p class="movie-title">Tales Of The Castastics</p>
+                
+                <div class="movie-metadata" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; margin: 8px 0; padding: 0 10px; line-height: 1.5;">
+                    <span class="badge-rating" style="background-color: #111; color: #ffcc00; border: 1px solid #ffcc00; padding: 2px 6px; font-size: 11px; font-weight: bold; border-radius: 4px; text-transform: uppercase;">G</span>
+                    <span class="movie-runtime" style="color: #ffffff; font-size: 11px; font-weight: bold;">Varies</span>
+                    <span style="color: #ffcc00; font-size: 11px;">•</span>
+                    <span class="movie-runtime" style="color: #ffffff; font-size: 11px; font-weight: bold;">Feb 7, 2026</span>
+                    <span style="color: #ffcc00; font-size: 11px;">•</span>
+                    <span class="movie-genre" style="color: #cccccc; font-size: 11px;">Animation • Short</span>
+                </div>
+
+                <p class="movie-desc" style="margin-bottom: 12px;">Tales Of The Castastics is mini shorts of the Castastians adventures!</p>
+
+     
                 <select onchange="playMedia(this.value, 'Tales Of The Castastics' + this.options[this.selectedIndex].text); if(this.value) { registerVideoView(); loadMediaInteraction('totc_show'); }">
                     <option value="">Select Episode</option>
                     <optgroup label="Season 1">
@@ -1089,6 +1102,10 @@ Castastics is a world of large casts of unique characters and make all dreams co
        
                 </optgroup>
                 </select>
+                <div class="movie-credits" style="margin-top: 12px;">
+                    <strong>Starring:</strong> David Artsy<br>
+                    <strong>Created By:</strong> David Artsy
+                </div>
             </div>        
         </div>
     </div>
