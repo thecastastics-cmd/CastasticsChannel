@@ -1138,7 +1138,7 @@ Castastics is a world of large casts of unique characters and make all dreams co
 
             display.style.display = "block";
             text.innerText = "NOW PLAYING: " + title;
-            if (link.includes('youtu')) return container.innerHTML = `<iframe id="main-player" src="${link}" frameborder="0" allowfullscreen style="width: 100% !important; height: 380px !important; border: none; border-radius: 8px;"></iframe>`, window.scrollTo({top: 0, behavior: 'smooth'});
+            if (link.includes('youtu')) return container.style.height = "auto", container.innerHTML = `<iframe id="main-player" src="${link}" frameborder="0" allowfullscreen style="width: 100% !important; aspect-ratio: 16/9; border: none; border-radius: 8px;"></iframe>`, window.scrollTo({top: 0, behavior: 'smooth'});
             container.innerHTML = `
                 <video id="main-player" controls controlsList="nodownload" oncontextmenu="return false;" style="-webkit-touch-callout: none;" playsinline webkitallowfullscreen mozallowfullscreen allowfullscreen autoplay>
                     <source src="${link}" type="video/mp4">
