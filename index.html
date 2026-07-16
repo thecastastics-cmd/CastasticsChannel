@@ -1021,7 +1021,18 @@ Castastics is a world of large casts of unique characters and make all dreams co
 
             <div class="card">
                 <img src="posters/idiotastics_show.jpg">
-                <p>The Idiotastics</p>
+                <p class="movie-title">The Idiotastics</p>
+                
+                <div class="movie-metadata" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; margin: 8px 0; padding: 0 10px; line-height: 1.5;">
+                    <span class="badge-rating" style="background-color: #111; color: #ffcc00; border: 1px solid #ffcc00; padding: 2px 6px; font-size: 11px; font-weight: bold; border-radius: 4px; text-transform: uppercase;">PG-13</span>
+                    <span class="movie-runtime" style="color: #ffffff; font-size: 11px; font-weight: bold;">Varies</span>
+                    <span style="color: #ffcc00; font-size: 11px;">•</span>
+                    <span class="movie-runtime" style="color: #ffffff; font-size: 11px; font-weight: bold;">Jun 15, 2025</span>
+                    <span style="color: #ffcc00; font-size: 11px;">•</span>
+                    <span class="movie-genre" style="color: #cccccc; font-size: 11px;">Adventure • Comedy</span>
+                </div>
+
+                <p class="movie-desc" style="margin-bottom: 12px;">The Idiotastics, are a small group of characters who are kinda dumb, they are friends or companions of BrianTheFool. Consist of Mr. Biscuit the cranky rude bald old fat man who is a drunkard, Rover the alien dog, and Adrien Woods the pirate.</p>
                 <select onchange="playMedia(this.value, 'The Idiotastics ' + this.options[this.selectedIndex].text); if(this.value) { registerVideoView(); loadMediaInteraction('idiotastics_show'); }">
                     <option value="">Select Episode</option>
                     <optgroup label="Season 1">
@@ -1048,6 +1059,12 @@ Castastics is a world of large casts of unique characters and make all dreams co
 
                     </optgroup>
                 </select>
+                <div class="movie-credits" style="margin-top: 12px;">
+                    <strong>Starring:</strong> David Artsy, BrianTheFool<br>
+                    <strong>Created By:</strong> BrianTheFool<br>
+                    <strong>Directed By:</strong> BrianTheFool, David Artsy<br>
+                    <strong>Produced By:</strong> BrianTheFool
+                </div>
             </div>
 
             <div class="card">
