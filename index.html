@@ -547,26 +547,29 @@ main {
 .movie-credits strong {
     color: #ffcc00;
 }
-/* Magic fix to align TV show dropdowns automatically */
+/* Magic fix to align TV show dropdowns automatically (FORCED OVERRIDE) */
 #tv-shows .grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: stretch; /* Forces all cards in the TV row to be the same height */
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: stretch !important; /* Forces all TV cards to be the exact same height */
 }
 
 #tv-shows .card {
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important; /* Pushes the top content and bottom content apart */
+    height: auto !important; /* Overrides any restrictive heights */
 }
 
+/* This targets the container wrapping the dropdown and credits, pushing them to the bottom */
 #tv-shows .card select {
-    margin-top: auto; /* Pushes the selector to the bottom */
+    margin-top: auto !important; /* Magnetizes the select dropdown to the very bottom */
 }
 
 #tv-shows .card .movie-credits {
-    margin-top: 12px; /* Keeps the credits neatly tucked under the selector */
-}        
+    margin-top: 12px !important;
+}
     </style>
 </head>
 <body>
