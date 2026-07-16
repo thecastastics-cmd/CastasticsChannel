@@ -547,30 +547,7 @@ main {
 .movie-credits strong {
     color: #ffcc00;
 }
-/* Magic fix to align TV show dropdowns automatically (FORCED OVERRIDE) */
-#tv-shows .grid {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    justify-content: center !important;
-    align-items: stretch !important; /* Forces all TV cards to be the exact same height */
-}
-
-#tv-shows .card {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important; /* Pushes the top content and bottom content apart */
-    height: auto !important; /* Overrides any restrictive heights */
-}
-
-/* This targets the container wrapping the dropdown and credits, pushing them to the bottom */
-#tv-shows .card select {
-    margin-top: auto !important; /* Magnetizes the select dropdown to the very bottom */
-}
-
-#tv-shows .card .movie-credits {
-    margin-top: 12px !important;
-}
-    </style>
+   </style>
 </head>
 <body>
     <img src="ripped_top_right.png" alt="" style="position: fixed; top: -15px; right: -15px; width: 100px; height: auto; z-index: 9999; pointer-events: none; opacity: 0.95;">
@@ -917,12 +894,11 @@ Castastics is a world of large casts of unique characters and make all dreams co
     </div>
     </div>
 
-        <div id="tv-shows">
         <div class="section-title">TV SHOWS</div>
         <div class="grid">
             
             <div class="card">
-                <img src="posters/castastics_show.jpg">
+                <img src="posters/castastics_show.jpg"><div style="height: 380px;">
                 <p class="movie-title">The Castastics</p>
                 
                 <div class="movie-metadata" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; margin: 8px 0; padding: 0 10px; line-height: 1.5;">
@@ -934,7 +910,7 @@ Castastics is a world of large casts of unique characters and make all dreams co
                     <span class="movie-genre" style="color: #cccccc; font-size: 11px;">Adventure • Comedy</span>
                 </div>
 
-                <p class="movie-desc" style="margin-bottom: 12px;">The original series following the adventures of David and his magical castastian friends as they go on crazy adventures and will protect David no matter what.</p>
+                <p class="movie-desc" style="margin-bottom: 12px;">The original series following the adventures of David and his magical castastian friends as they go on crazy adventures and will protect David no matter what.</p></div>
                 <select onchange="playMedia(this.value, 'The Castastics ' + this.options[this.selectedIndex].text); if(this.value) { registerVideoView(); loadMediaInteraction('castastics_show'); }">
                     <option value="">Select Episode</option>
                     
@@ -1044,7 +1020,7 @@ Castastics is a world of large casts of unique characters and make all dreams co
             </div>
 
             <div class="card">
-                <img src="posters/idiotastics_show.jpg">
+                <img src="posters/idiotastics_show.jpg"><div style="height: 380px;">
                 <p class="movie-title">The Idiotastics</p>
                 
                 <div class="movie-metadata" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; margin: 8px 0; padding: 0 10px; line-height: 1.5;">
@@ -1056,7 +1032,7 @@ Castastics is a world of large casts of unique characters and make all dreams co
                     <span class="movie-genre" style="color: #cccccc; font-size: 11px;">Adventure • Comedy</span>
                 </div>
 
-                <p class="movie-desc" style="margin-bottom: 12px;">The Idiotastics, are a small group of characters who are kinda dumb, they are friends or companions of BrianTheFool. Consist of Mr. Biscuit the cranky rude bald old fat man who is a drunkard, Rover the alien dog, and Adrien Woods the pirate.</p>
+                <p class="movie-desc" style="margin-bottom: 12px;">The Idiotastics, are a small group of characters who are kinda dumb, they are friends or companions of BrianTheFool. Consist of Mr. Biscuit the cranky rude bald old fat man who is a drunkard, Rover the alien dog, and Adrien Woods the pirate.</p></div>
                 <select onchange="playMedia(this.value, 'The Idiotastics ' + this.options[this.selectedIndex].text); if(this.value) { registerVideoView(); loadMediaInteraction('idiotastics_show'); }">
                     <option value="">Select Episode</option>
                     <optgroup label="Season 1">
@@ -1092,7 +1068,7 @@ Castastics is a world of large casts of unique characters and make all dreams co
             </div>
             
             <div class="card">
-                <img src="posters/tales.jpg">
+                <img src="posters/tales.jpg"><div style="height: 380px;">
                 <p class="movie-title">Tales Of The Castastics</p>
                 
                 <div class="movie-metadata" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; margin: 8px 0; padding: 0 10px; line-height: 1.5;">
@@ -1104,7 +1080,7 @@ Castastics is a world of large casts of unique characters and make all dreams co
                     <span class="movie-genre" style="color: #cccccc; font-size: 11px;">Animation • Short</span>
                 </div>
 
-                <p class="movie-desc" style="margin-bottom: 12px;">Tales Of The Castastics is mini shorts of the Castastians adventures!</p>
+                <p class="movie-desc" style="margin-bottom: 12px;">Tales Of The Castastics is mini shorts of the Castastians adventures!</p></div>
 
      
                 <select onchange="playMedia(this.value, 'Tales Of The Castastics' + this.options[this.selectedIndex].text); if(this.value) { registerVideoView(); loadMediaInteraction('totc_show'); }">
@@ -1132,7 +1108,7 @@ Castastics is a world of large casts of unique characters and make all dreams co
                 </div>
             </div>        
         </div>
-    </div> </div>
+    </div>
 <script>
         function playMedia(link, title) {
             if (!link || link.includes('DRIVE_ID')) return;
