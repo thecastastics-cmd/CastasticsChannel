@@ -10,7 +10,8 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Install Firebase Tools
+        run: npm install -g firebase-tools@latest
+
       - name: Deploy to Firebase
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: npx firebase-tools deploy --token "$FIREBASE_TOKEN" --project castastics-movies
+        run: firebase deploy --token "${{ secrets.FIREBASE_TOKEN }}" --project castastics-movies
