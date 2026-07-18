@@ -9,8 +9,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
+      - name: Debug Environment
+        run: |
+          node -v
+          npm -v
+
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
       - name: Deploy to Firebase
-        run: firebase deploy --only hosting --token "${{ secrets.FIREBASE_TOKEN }}"
+        run: |
+          firebase deploy --only hosting --token "${{ secrets.FIREBASE_TOKEN }}" --debug
