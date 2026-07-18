@@ -1,6 +1,5 @@
 {
   "hosting": {
-    "site": "castastics",
     "public": ".",
     "ignore": [
       "firebase.json",
