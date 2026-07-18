@@ -1,14 +1,5 @@
 {
   "projects": {
     "default": "castastics-movies"
-  },
-  "targets": {
-    "castastics-movies": {
-      "hosting": {
-        "castastics": [
-          "castastics"
-        ]
-      }
-    }
   }
 }
