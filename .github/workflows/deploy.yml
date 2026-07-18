@@ -8,9 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Deploy to Firebase
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
-          projectId: castastics-movies
+
+      - name: Deploy
+        run: |
+          npm install -g firebase-tools
+          firebase deploy --token "${{ secrets.FIREBASE_TOKEN }}" --project castastics-movies
