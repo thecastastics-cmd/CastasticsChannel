@@ -2397,6 +2397,10 @@ Castastics is a world of large casts of unique characters and make all dreams co
             <div id="page-characters" class="app-page" style="display: none; width: 100%;">
     <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 40px 15px;">
         <h1 style="text-align: center; color: #ffcc00; margin-bottom: 30px;">The Castastians</h1>
+        <input type="text" id="char-search" 
+       placeholder="Search Castastians..." 
+       onkeyup="filterChars()" 
+       style="width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #333; background: #222; color: #fff; box-sizing: border-box;">
         <div id="char-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;"></div>
     </div>
             </div>
@@ -2846,6 +2850,22 @@ castData.forEach((char, index) => {
         </div>
     `;
 });
+    function filterChars() {
+    const query = document.getElementById('char-search').value.toLowerCase();
+    const cards = document.querySelectorAll('#char-grid > div');
+    
+    cards.forEach(card => {
+        const name = card.querySelector('h3').innerText.toLowerCase();
+        const desc = card.querySelector('p').innerText.toLowerCase();
+        
+        // Show the card if the name or description matches the search
+        if (name.includes(query) || desc.includes(query)) {
+            card.style.display = "";
+        } else {
+            card.style.display = "none";
+        }
+    });
+    }
         </script>
 </body>
 </html>
