@@ -13,3 +13,4 @@ jobs:
           args: deploy --only hosting --project castastics-movies
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          PROJECT_ID: castastics-movies
