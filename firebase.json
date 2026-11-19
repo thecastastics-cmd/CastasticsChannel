@@ -1,11 +1,12 @@
 {
   "hosting": {
-    "site": "castastics",
     "public": ".",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
+    "redirects": [
+      {
+        "source": "**",
+        "destination": "https://castastics.us.ci/:splat",
+        "type": 301
+      }
     ]
   }
 }
