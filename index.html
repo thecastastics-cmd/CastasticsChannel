@@ -3161,5 +3161,17 @@ castData.forEach((char, index) => {
         </iframe>`;
     }
         </script>
+
+            <script>
+window.addEventListener('DOMContentLoaded', () => {
+  const main = document.getElementById('main-content');
+  if (!main) return;
+  // Un-trap every page - pull them out so they are side-by-side, not inside each other
+  document.querySelectorAll('.app-page').forEach(p => main.appendChild(p));
+  // Un-trap footer - put it after all pages, inside main-content so it always shows
+  const foot = document.querySelector('footer');
+  if (foot) main.appendChild(foot);
+});
+            </script>
 </body>
 </html>
