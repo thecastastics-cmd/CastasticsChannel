@@ -3118,9 +3118,7 @@ onAuthStateChanged(auth, async (user) => {
   if(subBtn){ if(window.currentUserIsSubbed){ subBtn.classList.add('subscribed'); subBtn.innerText = "✓ Subscribed"; } else { subBtn.classList.remove('subscribed'); subBtn.innerText = "Subscribe"; } }
   window.checkSubscriberPerks();
 });
-window.handleSignup = async () => {
-  const email = document.getElementById("auth-email").value; const pass = document.getElementById("auth-pass").value;
-  window.handleSignup = async () => { const name = document.getElementById("auth-name").value.trim(); if(!name){ document.getElementById("auth-error").innerText = "Please enter your name"; return; } const email = document.getElementById("auth-email").value; const pass = document.getElementById("auth-pass").value; try { const cred = await createUserWithEmailAndPassword(auth, email, pass); await set(ref(db, 'users/' + cred.user.uid), { email, displayName: name, isSubscribed: false, createdAt: Date.now() }); document.getElementById("auth-modal").style.display = "none"; } catch(e){ document.getElementById("auth-error").innerText = e.message; } };
+  window.handleSignup = async () => { const name = (document.getElementById("auth-name")?.value || "").trim(); if(!name){ document.getElementById("auth-error").innerText = "Please enter your name"; return; } const email = document.getElementById("auth-email").value; const pass = document.getElementById("auth-pass").value; try { const cred = await createUserWithEmailAndPassword(auth, email, pass); await set(ref(db, 'users/' + cred.user.uid), { email, displayName: name, isSubscribed: false, createdAt: Date.now() }); document.getElementById("auth-modal").style.display = "none"; } catch(e){ document.getElementById("auth-error").innerText = e.message; } };
 window.handleLogin = async () => {
   const email = document.getElementById("auth-email").value; const pass = document.getElementById("auth-pass").value;
   try { await signInWithEmailAndPassword(auth, email, pass); document.getElementById("auth-modal").style.display = "none"; } catch(e){ document.getElementById("auth-error").innerText = e.message; }
