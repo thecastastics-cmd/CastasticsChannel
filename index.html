@@ -3104,13 +3104,18 @@ const auth = getAuth(app);
 const db = getDatabase(app);
 window.currentUser = null;
 window.currentUserIsSubbed = false;
+const logoutBtn = document.getElementById("logoutBtn");
+if (logoutBtn) { logoutBtn.addEventListener("click", async () => { await signOut(auth); location.reload(); }); }
 onAuthStateChanged(auth, async (user) => {
   window.currentUser = user;
   const subBtn = document.getElementById("sub-button");
-  if (!user) { window.currentUserIsSubbed = false; if(subBtn){ subBtn.classList.remove('subscribed'); subBtn.innerText = "Login / Sign Up"; } window.checkSubscriberPerks(); return; }
-  const snap = await get(ref(db, 'users/' + user.uid + '/isSubscribed'));
- const nameSnap = await get(ref(db, 'users/' + user.uid + '/displayName')); window.currentUserDisplayName = nameSnap.val() || user.email.split('@')[0]; const cb = document.getElementById("comment-display-name"); if(cb) cb.value = "Posting as " + window.currentUserDisplayName;   
-  window.currentUserIsSubbed = snap.val() === true;
+  if (logoutBtn) logoutBtn.style.setProperty("display", user ? "inline-block" : "none", "important");
+  if (!user) { window.currentUserIsSubbed = false; window.currentUserDisplayName = null; if(subBtn){ subBtn.classList.remove('subscribed'); subBtn.innerText = "Login / Sign Up"; } const cb2 = document.getElementById("comment-display-name"); if(cb2) cb2.value = ""; window.checkSubscriberPerks(); return; }
+  const userSnap = await get(ref(db, 'users/' + user.uid));
+  const userData = userSnap.val() || {};
+  window.currentUserIsSubbed = userData.isSubscribed === true;
+  let savedName = userData.displayName; if(!savedName){ savedName = prompt("Set your display name (one time):"); if(savedName) await set(ref(db, 'users/' + user.uid + '/displayName'), savedName.trim()); } window.currentUserDisplayName = savedName || user.email.split('@')[0];
+  const cb = document.getElementById("comment-display-name"); if(cb) cb.value = "Posting as " + window.currentUserDisplayName;
   if(subBtn){ if(window.currentUserIsSubbed){ subBtn.classList.add('subscribed'); subBtn.innerText = "✓ Subscribed"; } else { subBtn.classList.remove('subscribed'); subBtn.innerText = "Subscribe"; } }
   window.checkSubscriberPerks();
 });
