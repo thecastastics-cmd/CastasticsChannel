@@ -3126,15 +3126,19 @@ window.handleLogin = async () => {
   try { await signInWithEmailAndPassword(auth, email, pass); document.getElementById("auth-modal").style.display = "none"; } catch(e){ document.getElementById("auth-error").innerText = e.message; }
 };
 window.handleAuthAction = async () => {
-  if (window.currentUser) {
-    if (!window.currentUserIsSubbed) {
-      await set(ref(db, 'users/' + window.currentUser.uid + '/isSubscribed'), true);
-      window.currentUserIsSubbed = true; window.checkSubscriberPerks();
-      document.getElementById("sub-button").innerText = "✓ Subscribed";
-    }
-    // if already subbed, do nothing - don't logout
-  } else { 
-    document.getElementById("auth-modal").style.display = "flex"; 
+  if (!window.currentUser) {
+    document.getElementById("auth-modal").style.display = "flex";
+    return;
+  }
+  const newValue = !window.currentUserIsSubbed;
+  await set(ref(db, 'users/' + window.currentUser.uid + '/isSubscribed'), newValue);
+  window.currentUserIsSubbed = newValue;
+  window.checkSubscriberPerks();
+  const btn = document.getElementById("sub-button");
+  if (btn) {
+    btn.innerText = newValue ? "✓ Subscribed (Tap to Unsub)" : "Subscribe";
+    if (newValue) btn.classList.add('subscribed');
+    else btn.classList.remove('subscribed');
   }
 };
 window.checkSubscriberPerks = function(){
