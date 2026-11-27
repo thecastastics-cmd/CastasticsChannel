@@ -3114,13 +3114,13 @@ onAuthStateChanged(auth, async (user) => {
   const userSnap = await get(ref(db, 'users/' + user.uid));
   const userData = userSnap.val() || {};
   window.currentUserIsSubbed = userData.isSubscribed === true;
-  let savedName = userData.displayName; if(!savedName){ savedName = prompt("Set your display name (one time):"); if(savedName) await set(ref(db, 'users/' + user.uid + '/displayName'), savedName.trim()); } window.currentUserDisplayName = savedName || user.email.split('@')[0];
+  let savedName = userData.displayName; if(!savedName){ savedName = await prompt("Set your display name (one time):"); if(savedName) await set(ref(db, 'users/' + user.uid + '/displayName'), savedName.trim()); } window.currentUserDisplayName = savedName || user.email.split('@')[0];
   const cb = document.getElementById("comment-display-name"); if(cb) cb.value = "Posting as " + window.currentUserDisplayName;
   if(subBtn){ if(window.currentUserIsSubbed){ subBtn.classList.add('subscribed'); subBtn.innerText = "✓ Subscribed"; } else { subBtn.classList.remove('subscribed'); subBtn.innerText = "Subscribe"; } }
   window.checkSubscriberPerks();
 });
-  window.handleSignup = async () => { const name = (document.getElementById("auth-name")?.value || "").trim(); if(!name){ document.getElementById("auth-error").innerText = "Please enter your name"; return; } const email = document.getElementById("auth-email").value; const pass = document.getElementById("auth-pass").value; try { const cred = await createUserWithEmailAndPassword(auth, email, pass); await set(ref(db, 'users/' + cred.user.uid), { email, displayName: name, isSubscribed: false, createdAt: Date.now() }); document.getElementById("auth-modal").style.display = "none"; } catch(e){ document.getElementById("auth-error").innerText = e.message; } };
-window.handleLogin = async () => {
+   window.handleSignup = async () => { const email = document.getElementById("auth-email").value; const pass = document.getElementById("auth-pass").value; try { const cred = await createUserWithEmailAndPassword(auth, email, pass); await set(ref(db, 'users/' + cred.user.uid), { email, displayName: null, isSubscribed: false, createdAt: Date.now() }); document.getElementById("auth-modal").style.display = "none"; } catch(e){ document.getElementById("auth-error").innerText = e.message; } }; 
+  window.handleLogin = async () => {
   const email = document.getElementById("auth-email").value; const pass = document.getElementById("auth-pass").value;
   try { await signInWithEmailAndPassword(auth, email, pass); document.getElementById("auth-modal").style.display = "none"; } catch(e){ document.getElementById("auth-error").innerText = e.message; }
 };
@@ -3160,6 +3160,52 @@ window.checkSubscriberPerks = function(){
   else { if(lockedBox) lockedBox.style.display = "block"; if(unlockedBox) unlockedBox.style.display = "none"; if(mainBox) mainBox.style.border = "2px dashed #444"; }
 };
 </script> 
+
+ <script>
+// KILLS browser prompt/alert - no more "site says" popup
+(function(){
+  function makeModal(){
+    let m = document.getElementById("custom-popup");
+    if(m) return m;
+    m = document.createElement("div");
+    m.id = "custom-popup";
+    m.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.8);display:none;align-items:center;justify-content:center;z-index:99999;padding:20px;";
+    m.innerHTML = `<div style="background:#111;padding:22px;border-radius:12px;width:100%;max-width:340px;border:1px solid #333;text-align:center;"><div id="custom-popup-text" style="color:#fff;font-size:16px;margin-bottom:15px;"></div><input id="custom-popup-input" type="text" style="width:100%;padding:12px;background:#222;color:#fff;border:1px solid #333;border-radius:6px;box-sizing:border-box;display:none;"><div style="display:flex;gap:10px;margin-top:15px;"><button id="custom-popup-cancel" style="flex:1;padding:12px;background:#333;color:#fff;border:none;border-radius:6px;cursor:pointer;">Cancel</button><button id="custom-popup-ok" style="flex:1;padding:12px;background:#ffcc00;color:#000;border:none;border-radius:6px;font-weight:bold;cursor:pointer;">OK</button></div></div>`;
+    document.body.appendChild(m);
+    return m;
+  }
+
+  window.prompt = function(msg){
+    return new Promise((resolve)=>{
+      const m = makeModal();
+      const txt = document.getElementById("custom-popup-text");
+      const inp = document.getElementById("custom-popup-input");
+      const ok = document.getElementById("custom-popup-ok");
+      const cancel = document.getElementById("custom-popup-cancel");
+      txt.innerText = msg || "";
+      inp.style.display = "block";
+      inp.value = "";
+      m.style.display = "flex";
+      setTimeout(()=>inp.focus(), 50);
+      const done = (v)=>{ m.style.display="none"; resolve(v); };
+      ok.onclick = ()=> done(inp.value);
+      cancel.onclick = ()=> done(null);
+      inp.onkeydown = (e)=>{ if(e.key==="Enter") done(inp.value); };
+    });
+  };
+
+  window.alert = function(msg){
+    return new Promise((resolve)=>{
+      const m = makeModal();
+      document.getElementById("custom-popup-text").innerText = msg || "";
+      document.getElementById("custom-popup-input").style.display = "none";
+      document.getElementById("custom-popup-cancel").style.display = "none";
+      m.style.display = "flex";
+      document.getElementById("custom-popup-ok").onclick = ()=>{ m.style.display="none"; document.getElementById("custom-popup-cancel").style.display="block"; resolve(); };
+    });
+  };
+})();
+ </script>           
     
 </body>
 </html>
