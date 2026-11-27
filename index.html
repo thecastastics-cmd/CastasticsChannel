@@ -820,6 +820,7 @@ body.pitch-black-mode .container {
 
                 </div>
                 <button class="sub-btn" id="sub-button" onclick="handleAuthAction()">Login / Sign Up</button>
+                <button class="sub-btn" id="logoutBtn" style="display:none;">Logout</button>
             </div>
             <div class="channel-description-box" style="padding: 15px 20px; text-align: center; max-width: 800px; margin: 0 auto 20px auto;">
     <p style="color: #cccccc; font-size: 1.05rem; line-height: 1.6; font-family: sans-serif; margin: 0;">
@@ -3126,17 +3127,33 @@ window.handleLogin = async () => {
 };
 window.handleAuthAction = async () => {
   if (window.currentUser) {
-    if (window.currentUserIsSubbed) { await signOut(auth); return; }
-    await set(ref(db, 'users/' + window.currentUser.uid + '/isSubscribed'), true);
-    window.currentUserIsSubbed = true; window.checkSubscriberPerks();
-    document.getElementById("sub-button").innerText = "✓ Subscribed";
-  } else { document.getElementById("auth-modal").style.display = "flex"; }
+    if (!window.currentUserIsSubbed) {
+      await set(ref(db, 'users/' + window.currentUser.uid + '/isSubscribed'), true);
+      window.currentUserIsSubbed = true; window.checkSubscriberPerks();
+      document.getElementById("sub-button").innerText = "✓ Subscribed";
+    }
+    // if already subbed, do nothing - don't logout
+  } else { 
+    document.getElementById("auth-modal").style.display = "flex"; 
+  }
 };
 window.checkSubscriberPerks = function(){
   const lockedBox = document.getElementById("perks-locked"); const unlockedBox = document.getElementById("perks-unlocked"); const mainBox = document.getElementById("subscriber-perks-box");
   if (window.currentUserIsSubbed) { if(lockedBox) lockedBox.style.display = "none"; if(unlockedBox) unlockedBox.style.display = "block"; if(mainBox) mainBox.style.border = "1px solid #ffcc00"; }
   else { if(lockedBox) lockedBox.style.display = "block"; if(unlockedBox) unlockedBox.style.display = "none"; if(mainBox) mainBox.style.border = "2px dashed #444"; }
 };
-</script>           
+    // Show Logout only when logged in, but KEEP sub-button visible
+const logoutBtn = document.getElementById("logoutBtn");
+onAuthStateChanged(auth, (user) => {
+  if (logoutBtn) logoutBtn.style.display = user ? "inline-block" : "none";
+});
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", async () => {
+    await signOut(auth);
+    location.reload();
+  });
+      }
+</script> 
+    
 </body>
 </html>
