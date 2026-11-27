@@ -819,7 +819,7 @@ body.pitch-black-mode .container {
                     </div>
 
                 </div>
-                <button class="sub-btn" id="sub-button">Subscribe</button>
+                <button class="sub-btn" id="sub-button" onclick="handleAuthAction()">Login / Sign Up</button>
             </div>
             <div class="channel-description-box" style="padding: 15px 20px; text-align: center; max-width: 800px; margin: 0 auto 20px auto;">
     <p style="color: #cccccc; font-size: 1.05rem; line-height: 1.6; font-family: sans-serif; margin: 0;">
@@ -1447,128 +1447,37 @@ Castastics is a world of large casts of unique characters and make all dreams co
 </script>
 
             
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBBx7S1tbTO02Y0TfSYodqJWRvLfQwq_Qs",
-            authDomain: "castastics-movies.firebaseapp.com",
-            databaseURL: "https://castastics-movies-default-rtdb.firebaseio.com",
-            projectId: "castastics-movies",
-            storageBucket: "castastics-movies.firebasestorage.app",
-            messagingSenderId: "194457932457",
-            appId: "1:194457932457:web:72e3372596f4f248a30fb8",
-            measurementId: "G-W59DD5SNZ6"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const subRef = ref(db, 'subCount');
-
-        const countElement = document.getElementById("sub-count-text");
-        const subButton = document.getElementById("sub-button");
-
-        function formatSubs(num) {
-            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-            if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
-            return num;
+<script type="module">
+    import { initializeApp, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    const firebaseConfig = {
+        apiKey: "AIzaSyBBx7S1tbTO02Y0TfSYodqJWRvLfQwq_Qs",
+        authDomain: "castastics-movies.firebaseapp.com",
+        databaseURL: "https://castastics-movies-default-rtdb.firebaseio.com",
+        projectId: "castastics-movies",
+        storageBucket: "castastics-movies.firebasestorage.app",
+        messagingSenderId: "194457932457",
+        appId: "1:194457932457:web:72e3372596f4f248a30fb8",
+        measurementId: "G-W59DD5SNZ6"
+    };
+    let app; try { app = getApp(); } catch(e){ app = initializeApp(firebaseConfig); }
+    const db = getDatabase(app);
+    const subRef = ref(db, 'subCount');
+    const countElement = document.getElementById("sub-count-text");
+    function formatSubs(num) {
+        if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+        if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
+        return num;
+    }
+    onValue(subRef, (snapshot) => {
+        const currentCount = snapshot.val();
+        if (countElement && currentCount !== null) {
+            countElement.innerText = formatSubs(currentCount) + " subscribers";
         }
+    });
+</script>
 
-        // 1. Instantly listen for live updates from Firebase globally
-        // 1. Instantly listen for live updates from Firebase globally & check local memory
-        onValue(subRef, (snapshot) => {
-            const currentCount = snapshot.val();
-            if (countElement && currentCount !== null) {
-                countElement.innerText = formatSubs(currentCount) + " subscribers";
-            }
-            
-            // Check if THIS specific browser already subscribed before the refresh
-            if (localStorage.getItem('isSubscribed') === 'true') {
-                subButton.classList.add('subscribed');
-                subButton.innerText = "✓ Subscribed";
-            }
-        });
 
-        // 2. Add +1 (or subtract -1) and save state to browser memory
-        // 2. Add +1 (or subtract -1) and save state to browser memory
-        function handleSubscribe() {
-            // Read directly from browser memory to see if they are already subbed
-            const alreadySubbed = localStorage.getItem('isSubscribed') === 'true';
-            
-            runTransaction(subRef, (currentValue) => {
-                if (alreadySubbed) {
-                    // If already subbed, clicking again UNSUBSCRIBES (-1)
-                    return (currentValue || 750000) - 1;
-                } else {
-                    // If not subbed, clicking adds +1
-                    return (currentValue || 750000) + 1;
-                }
-            });
-            
-            // Toggle the visual state and update the memory based on what just happened
-            const toast = document.getElementById("custom-toast");
-            
-            // Tiny helper function to show your smooth yellow bubble message
-            function showSubToast(message) {
-                if (toast) {
-                    toast.innerText = message;
-                    toast.style.display = "block";
-                    setTimeout(() => {
-                        toast.style.display = "none";
-                    }, 3000);
-                }
-            }
-
-            if (alreadySubbed) {
-                subButton.classList.remove('subscribed');
-                subButton.innerText = "Subscribe";
-                localStorage.setItem('isSubscribed', 'false');
-                
-                // Show clean toast notification (No alerts!)
-                showSubToast("Unsubscribed successfully.");
-            } else {
-                subButton.classList.add('subscribed');
-                subButton.innerText = "✓ Subscribed";
-                localStorage.setItem('isSubscribed', 'true');
-                
-                // Show clean toast notification (No alerts!)
-                showSubToast("Subscribed successfully!");
-            }
-
-            // 🌟 UNLOCK/LOCK YOUR PERKS INSTANTLY
-            checkSubscriberPerks();
-        }
-
-        // Your existing sub button event listener remains clean inside the script
-        if (subButton) {
-            subButton.addEventListener("click", handleSubscribe);
-        }
-
-        // Function to handle switching the perks view smoothly
-        function checkSubscriberPerks() {
-            const lockedBox = document.getElementById("perks-locked");
-            const unlockedBox = document.getElementById("perks-unlocked");
-            const mainBox = document.getElementById("subscriber-perks-box");
-
-            // Check if user is marked as subscribed in localStorage
-            if (localStorage.getItem("isSubscribed") === "true") {
-                if (lockedBox) lockedBox.style.display = "none";
-                if (unlockedBox) unlockedBox.style.display = "block";
-                if (mainBox) mainBox.style.border = "1px solid #ffcc00"; // Sleek solid boundary when active
-            } else {
-                if (lockedBox) lockedBox.style.display = "block";
-                if (unlockedBox) unlockedBox.style.display = "none";
-                if (mainBox) mainBox.style.border = "2px dashed #444";
-            }
-        }
-
-        // Call it immediately on page load to check their subscription status right away
-        window.addEventListener("DOMContentLoaded", () => {
-            checkSubscriberPerks();
-        });
-    </script>
 
                 <script type="module">
         import { initializeApp, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -2761,7 +2670,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         element.addEventListener(eventType, function(e) {
             if (e.target.classList.contains('btn-trailer')) return;
-            if (localStorage.getItem("isSubscribed") !== "true") {
+            if (!window.currentUserIsSubbed) {
                 e.preventDefault();
                 e.stopImmediatePropagation(); // Blocks the episode from loading or playing
 
@@ -3173,5 +3082,61 @@ window.addEventListener('DOMContentLoaded', () => {
   if (foot) main.appendChild(foot);
 });
             </script>
+
+ <!-- AUTH MODAL -->
+<div id="auth-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.92); z-index:20000; align-items:center; justify-content:center;">
+  <div style="background:#111; border:3px solid #ffcc00; padding:30px; border-radius:15px; width:90%; max-width:350px; text-align:center;">
+    <h2 style="color:#ffcc00;">Login / Sign Up</h2>
+    <p style="color:#aaa; font-family:sans-serif; font-size:0.85rem;">Your sub is saved to your account, not this browser.</p>
+    <input id="auth-email" type="email" placeholder="Email" style="width:100%; padding:12px; margin:10px 0; background:#222; color:#fff; border:none; border-radius:5px; box-sizing:border-box;">
+    <input id="auth-pass" type="password" placeholder="Password (6+ chars)" style="width:100%; padding:12px; margin:10px 0; background:#222; color:#fff; border:none; border-radius:5px; box-sizing:border-box;">
+    <button onclick="handleSignup()" style="width:100%; padding:12px; background:#ffcc00; font-weight:bold; border:none; border-radius:5px; margin:5px 0; cursor:pointer;">SIGN UP</button>
+    <button onclick="handleLogin()" style="width:100%; padding:12px; background:#333; color:#fff; font-weight:bold; border:none; border-radius:5px; margin:5px 0; cursor:pointer;">LOGIN</button>
+    <p onclick="document.getElementById('auth-modal').style.display='none'" style="color:#aaa; cursor:pointer; font-family:sans-serif;">Close</p>
+    <p id="auth-error" style="color:#ff3333; font-family:sans-serif; font-size:0.85rem;"></p>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+const firebaseConfig = { apiKey: "AIzaSyBBx7S1tbTO02Y0TfSYodqJWRvLfQwq_Qs", authDomain: "castastics-movies.firebaseapp.com", databaseURL: "https://castastics-movies-default-rtdb.firebaseio.com", projectId: "castastics-movies", storageBucket: "castastics-movies.firebasestorage.app", messagingSenderId: "194457932457", appId: "1:194457932457:web:72e3372596f4f248a30fb8" };
+let app; try { app = getApp(); } catch(e){ app = initializeApp(firebaseConfig); }
+const auth = getAuth(app);
+const db = getDatabase(app);
+window.currentUser = null;
+window.currentUserIsSubbed = false;
+onAuthStateChanged(auth, async (user) => {
+  window.currentUser = user;
+  const subBtn = document.getElementById("sub-button");
+  if (!user) { window.currentUserIsSubbed = false; if(subBtn){ subBtn.classList.remove('subscribed'); subBtn.innerText = "Login / Sign Up"; } window.checkSubscriberPerks(); return; }
+  const snap = await get(ref(db, 'users/' + user.uid + '/isSubscribed'));
+  window.currentUserIsSubbed = snap.val() === true;
+  if(subBtn){ if(window.currentUserIsSubbed){ subBtn.classList.add('subscribed'); subBtn.innerText = "✓ Subscribed"; } else { subBtn.classList.remove('subscribed'); subBtn.innerText = "Subscribe"; } }
+  window.checkSubscriberPerks();
+});
+window.handleSignup = async () => {
+  const email = document.getElementById("auth-email").value; const pass = document.getElementById("auth-pass").value;
+  try { const cred = await createUserWithEmailAndPassword(auth, email, pass); await set(ref(db, 'users/' + cred.user.uid), { email, isSubscribed: false, createdAt: Date.now() }); document.getElementById("auth-modal").style.display = "none"; } catch(e){ document.getElementById("auth-error").innerText = e.message; }
+};
+window.handleLogin = async () => {
+  const email = document.getElementById("auth-email").value; const pass = document.getElementById("auth-pass").value;
+  try { await signInWithEmailAndPassword(auth, email, pass); document.getElementById("auth-modal").style.display = "none"; } catch(e){ document.getElementById("auth-error").innerText = e.message; }
+};
+window.handleAuthAction = async () => {
+  if (window.currentUser) {
+    if (window.currentUserIsSubbed) { await signOut(auth); return; }
+    await set(ref(db, 'users/' + window.currentUser.uid + '/isSubscribed'), true);
+    window.currentUserIsSubbed = true; window.checkSubscriberPerks();
+    document.getElementById("sub-button").innerText = "✓ Subscribed";
+  } else { document.getElementById("auth-modal").style.display = "flex"; }
+};
+window.checkSubscriberPerks = function(){
+  const lockedBox = document.getElementById("perks-locked"); const unlockedBox = document.getElementById("perks-unlocked"); const mainBox = document.getElementById("subscriber-perks-box");
+  if (window.currentUserIsSubbed) { if(lockedBox) lockedBox.style.display = "none"; if(unlockedBox) unlockedBox.style.display = "block"; if(mainBox) mainBox.style.border = "1px solid #ffcc00"; }
+  else { if(lockedBox) lockedBox.style.display = "block"; if(unlockedBox) unlockedBox.style.display = "none"; if(mainBox) mainBox.style.border = "2px dashed #444"; }
+};
+</script>           
 </body>
 </html>
