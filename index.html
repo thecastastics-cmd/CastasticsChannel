@@ -3130,15 +3130,29 @@ window.handleAuthAction = async () => {
     document.getElementById("auth-modal").style.display = "flex";
     return;
   }
-  const newValue = !window.currentUserIsSubbed;
-  await set(ref(db, 'users/' + window.currentUser.uid + '/isSubscribed'), newValue);
-  window.currentUserIsSubbed = newValue;
-  window.checkSubscriberPerks();
-  const btn = document.getElementById("sub-button");
-  if (btn) {
-    btn.innerText = newValue ? "✓ Subscribed (Tap to Unsub)" : "Subscribe";
-    if (newValue) btn.classList.add('subscribed');
-    else btn.classList.remove('subscribed');
+  try {
+    const newValue = !window.currentUserIsSubbed;
+    // 1. Update your sub status
+    await set(ref(db, 'users/' + window.currentUser.uid + '/isSubscribed'), newValue);
+    window.currentUserIsSubbed = newValue;
+
+    // 2. Update the global subCount so it goes up/down in realtime
+    const countSnap = await get(ref(db, 'subCount'));
+    let currentCount = countSnap.val() || 0;
+    if (typeof currentCount !== 'number') currentCount = 0;
+    let newCount = newValue ? currentCount + 1 : Math.max(0, currentCount - 1);
+    await set(ref(db, 'subCount'), newCount);
+
+    window.checkSubscriberPerks();
+    const btn = document.getElementById("sub-button");
+    if (btn) {
+      btn.innerText = newValue ? "✓ Subscribed (Tap to Unsub)" : "Subscribe";
+      if (newValue) btn.classList.add('subscribed');
+      else btn.classList.remove('subscribed');
+    }
+    console.log("Sub toggled to:", newValue, "New subCount:", newCount);
+  } catch(e) {
+    alert("Firebase error: " + e.message);
   }
 };
 window.checkSubscriberPerks = function(){
