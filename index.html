@@ -3205,6 +3205,13 @@ window.checkSubscriberPerks = function(){
   };
 })();
  </script>           
-    
+ <script>
+window.addEventListener("load", () => {
+  const e = document.getElementById("auth-email");
+  const p = document.getElementById("auth-pass");
+  if(e) e.setAttribute("autocomplete", "email");
+  if(p) p.setAttribute("autocomplete", "current-password");
+});
+ </script>
 </body>
 </html>
