@@ -877,11 +877,7 @@ Castastics is a world of large casts of unique characters and make all dreams co
             <div id="comments-list" style="max-height: 300px; overflow-y: auto; margin-bottom: 15px; padding-right: 5px;">
                 </div>
 
-            <div class="comment-input-form" style="display: flex; gap: 10px;">
-                <input type="text" id="comment-username" placeholder="Your Name" style="width: 25%; background: #222; color: #fff; border: 1px solid #333; padding: 10px; border-radius: 4px; font-size: 0.9rem;">
-                <input type="text" id="comment-text" placeholder="Add a public comment..." style="width: 60%; background: #222; color: #fff; border: 1px solid #333; padding: 10px; border-radius: 4px; font-size: 0.9rem;">
-                <button onclick="submitComment()" style="width: 15%; background: #ffcc00; color: #000; border: none; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer;">Post</button>
-            </div>
+            <div class="comment-input-form" style="display: flex; gap: 10px;"><input type="text" id="comment-display-name" placeholder="Login to comment" disabled style="width: 25%; background: #111; color: #aaa; border: 1px solid #333; padding: 10px; border-radius: 4px; font-size: 0.9rem;"><input type="text" id="comment-text" placeholder="Add a public comment..." autocomplete="off" style="width: 60%; background: #222; color: #fff; border: 1px solid #333; padding: 10px; border-radius: 4px; font-size: 0.9rem;"><button onclick="submitComment()" style="width: 15%; background: #ffcc00; color: #000; border: none; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer;">Post</button></div>
 </div>
         <div class="section-title">MOVIES</div>
 <div class="grid">
@@ -1754,7 +1750,7 @@ document.addEventListener('click', (e) => {
 
         // Action when a user clicks 'Post' comment (Now submits rating too!)
         function submitComment() {
-            const nameInput = document.getElementById("comment-username");
+            if(!window.currentUser){ showToast("Login to comment"); document.getElementById("auth-modal").style.display = "flex"; return; }
             const textInput = document.getElementById("comment-text");
             const selectEl = document.getElementById("user-star-input");
             const toast = document.getElementById("custom-toast");
@@ -1778,8 +1774,7 @@ document.addEventListener('click', (e) => {
                 textInput.value = ""; 
                 return; 
             }
-
-            const name = nameInput.value.trim() || "AnonymousCastastian";
+            const name = window.currentUserDisplayName || "AnonymousCastastian";
             const text = textInput.value.trim();
 
             if (!text) return; // Prevent empty posts
@@ -3114,6 +3109,7 @@ onAuthStateChanged(auth, async (user) => {
   const subBtn = document.getElementById("sub-button");
   if (!user) { window.currentUserIsSubbed = false; if(subBtn){ subBtn.classList.remove('subscribed'); subBtn.innerText = "Login / Sign Up"; } window.checkSubscriberPerks(); return; }
   const snap = await get(ref(db, 'users/' + user.uid + '/isSubscribed'));
+ const nameSnap = await get(ref(db, 'users/' + user.uid + '/displayName')); window.currentUserDisplayName = nameSnap.val() || user.email.split('@')[0]; const cb = document.getElementById("comment-display-name"); if(cb) cb.value = "Posting as " + window.currentUserDisplayName;   
   window.currentUserIsSubbed = snap.val() === true;
   if(subBtn){ if(window.currentUserIsSubbed){ subBtn.classList.add('subscribed'); subBtn.innerText = "✓ Subscribed"; } else { subBtn.classList.remove('subscribed'); subBtn.innerText = "Subscribe"; } }
   window.checkSubscriberPerks();
