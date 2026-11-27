@@ -3213,5 +3213,44 @@ window.addEventListener("load", () => {
   if(p) p.setAttribute("autocomplete", "current-password");
 });
  </script>
+
+  <script>
+// Fix double-button + locked glitch
+window.addEventListener("load", () => {
+  const loginBtn = document.querySelector('button[onclick*="openAuth"], button[onclick*="login"], button[onclick*="Auth"]');
+  const allBtns = [...document.querySelectorAll('button')];
+  const loginB = allBtns.find(b => b.textContent.trim().toUpperCase().includes('LOGIN'));
+  const logoutB = allBtns.find(b => b.textContent.trim().toUpperCase() === 'LOGOUT');
+
+  if(!loginB || !logoutB) return;
+
+  // Hide both for a sec so you don't see the glitch
+  loginB.style.visibility = 'hidden';
+  logoutB.style.visibility = 'hidden';
+
+  function fixUI(){
+    // If Firebase / localStorage says you're logged in
+    const isLoggedIn = !!localStorage.getItem('castastics_user') || !!localStorage.getItem('user') || document.body.innerHTML.includes('Welcome back') || logoutB.style.display !== 'none' && localStorage.length > 0;
+
+    // Check if your site already thinks you're logged in - look for stored auth
+    const hasAuth = Object.keys(localStorage).some(k => k.includes('firebase') || k.includes('auth') || k.includes('user'));
+
+    if(hasAuth){
+      loginB.style.display = 'none';
+      logoutB.style.display = '';
+      logoutB.style.visibility = 'visible';
+    } else {
+      logoutB.style.display = 'none';
+      loginB.style.display = '';
+      loginB.style.visibility = 'visible';
+    }
+  }
+
+  // Try a few times because Firebase is slow
+  setTimeout(fixUI, 500);
+  setTimeout(fixUI, 1500);
+  setTimeout(fixUI, 3000);
+});
+  </script>          
 </body>
 </html>
